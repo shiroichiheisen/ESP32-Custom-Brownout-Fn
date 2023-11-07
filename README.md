@@ -1,38 +1,87 @@
 # ESP32 Custom Brownout Handler Library
 
-Welcome to the ESP32 Custom Brownout Handler Library, the definitive solution for managing voltage sags with precision. This lightweight library is dedicated to providing a singular, robust function that you can tailor to respond to brownout conditions encountered by your ESP32 device.
+This library provides a way to integrate a custom brownout handler function for ESP32 devices, enhancing system stability during voltage dips. It's compatible with both the ESP-IDF and Arduino development frameworks.
 
 ## Features
-- **Custom Brownout Response**: Easily implement your own logic to respond to brownout interrupts.
-- **Minimal Overhead**: Designed to be lightweight, not overburdening your device's resources.
-- **Easy Integration**: Simple setup process, which allows for quick integration into existing projects.
+- **Customizable Brownout Handling**: Tailor the response to brownout conditions with your own function.
+- **Optimized for Real-Time Execution**: Use the `IRAM_ATTR` to ensure the handler is in IRAM for quick execution.
+- **Framework Compatibility**: Works with both ESP-IDF and Arduino setups.
 
 ## How to Install
-To install this library, simply clone this repository or download the release to your local machine. Include the library in your project and ensure it is on your include path.
+
+For ESP-IDF, clone this repository into your `components` directory. For Arduino, include the library in your project's libraries directory.
 
 ## How to Use
-To use this library, follow these steps:
-1. Include the library header in your project.
-2. Implement your custom brownout handler function.
-3. Instantiate the `ESP32_Custom_Brownout_Fn` with your handler function.
 
-Here's a quick start example:
+Before you use the library, ensure you have included the `esp_attr.h` header to enable the use of `IRAM_ATTR`.
 
-```cpp
-#include "ESP32_Custom_Brownout_Handler.h"
+Here's how to set up your custom brownout handler:
+
+### With ESP-IDF:
+
+```c
 #include "esp_attr.h"
+#include "ESP32_Custom_Brownout_Handler.h"
 
-// Your custom handler function
-void IRAM_ATTR custom_brownout_handler() {
-    // Handle brownout event here
+// Define your custom brownout handler function with IRAM_ATTR
+IRAM_ATTR void custom_brownout_handler() {
+    // Custom logic for handling brownout conditions
 }
 
-void setup() {
-    // Instantiate the custom brownout handler
+void app_main() {
+    // Initialize the custom brownout handler
     ESP32_Custom_Brownout_Fn(custom_brownout_handler);
+    // Rest of your setup code
+}
+```
+
+### With Arduino:
+
+```c
+#include "esp_attr.h"
+#include "ESP32_Custom_Brownout_Handler.h"
+
+// Global instance of the custom brownout handler
+IRAM_ATTR void custom_brownout_handler() {
+    // Custom logic for handling brownout conditions
+}
+
+// Initialize with your custom handler
+ESP32_Custom_Brownout_Fn customBrownoutHandler(custom_brownout_handler);
+
+void setup() {
+    // Your setup code here
+}
+
+void loop() {
+    // Main code loop
+}
+
+```
+
+### Global Instance:
+
+You may also declare the handler globally if you prefer:
+
+```c
+#include "esp_attr.h"
+#include "ESP32_Custom_Brownout_Handler.h"
+
+// Global instance of the custom brownout handler
+IRAM_ATTR void custom_brownout_handler() {
+    // Custom logic for handling brownout conditions
+}
+
+// Initialize with your custom handler
+ESP32_Custom_Brownout_Fn customBrownoutHandler(custom_brownout_handler);
+
+void setup() {
+    // Your setup code here
 }
 
 void loop() {
     // Main code loop
 }
 ```
+
+Remember that the function you pass to `ESP32_Custom_Brownout_Fn` must be marked with `IRAM_ATTR` to ensure that it's placed in IRAM for faster execution which is critical during brownout conditions.
