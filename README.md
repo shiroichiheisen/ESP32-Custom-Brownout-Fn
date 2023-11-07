@@ -35,4 +35,4 @@ void setup() {
 void loop() {
     // Main code loop
 }
-```cpp
+```
