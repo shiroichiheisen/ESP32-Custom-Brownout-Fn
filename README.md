@@ -24,7 +24,7 @@ Here's how to set up your custom brownout handler:
 #include "ESP32_Custom_Brownout_Handler.h"
 
 // Define your custom brownout handler function with IRAM_ATTR
-IRAM_ATTR void custom_brownout_handler() {
+void IRAM_ATTR custom_brownout_handler() {
     // Custom logic for handling brownout conditions
 }
 
@@ -42,7 +42,7 @@ void app_main() {
 #include "ESP32_Custom_Brownout_Handler.h"
 
 // Global instance of the custom brownout handler
-IRAM_ATTR void custom_brownout_handler() {
+void IRAM_ATTR custom_brownout_handler() {
     // Custom logic for handling brownout conditions
 }
 
@@ -68,7 +68,7 @@ You may also declare the handler globally if you prefer:
 #include "ESP32_Custom_Brownout_Handler.h"
 
 // Global instance of the custom brownout handler
-IRAM_ATTR void custom_brownout_handler() {
+void IRAM_ATTR custom_brownout_handler() {
     // Custom logic for handling brownout conditions
 }
 
